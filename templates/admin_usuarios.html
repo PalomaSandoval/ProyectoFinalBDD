@@ -1,0 +1,87 @@
+{% extends "admin_layout.html" %}
+
+{% block title %}Usuarios Admin{% endblock %}
+
+{% block page_title %}
+    Gestión de Administradores
+{% endblock %}
+
+{% block content %}
+    
+    <div class="admin-main" style="margin-bottom: 2rem;">
+        <h3>Dar de alta nuevo Admin</h3>
+        <form class="admin-form" method="POST" action="{{ url_for('admin_bp.admin_crear_usuario') }}" style="max-width: none; margin: 0;">
+            
+            <div style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-actions" style="margin-bottom: 0;">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-symbols-outlined">person_add</span>
+                        Agregar a Nuevo Administrador
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="admin-main">
+        <h3>Equipo de Administración</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            {% for usuario in usuarios %}
+            <tr>
+                <td><strong>{{ usuario.name }}</strong></td>
+                <td>{{ usuario.email }}</td>
+                <td>
+                    <div style="display: flex; gap: 10px;">
+                        
+                        {% if usuario._id == session.user_id %}
+                            <a href="{{ url_for('admin_bp.admin_editar_perfil') }}" class="btn btn-secondary" title="Editar mi perfil">
+                                <span class="material-symbols-outlined">edit</span>
+                            </a>
+                        {% else %}
+                            <button class="btn btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed; background-color: #e9ecef;" title="Solo puedes editar tu propio perfil">
+                                <span class="material-symbols-outlined">lock</span>
+                            </button>
+                        {% endif %}
+
+                        <form action="{{ url_for('admin_bp.admin_eliminar_usuario', user_id_str=usuario._id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres correr a {{ usuario.name }}?');">
+                            <button type="submit" class="btn btn-danger">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

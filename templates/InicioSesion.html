@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión NodeBlogAdmin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='InicioyRegistro.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="page-container">
+        <div class="logo-container">
+            <h1>NodeBlog Admin</h1>
+        </div>
+        <div class="auth-wrapper">
+            <div style="background: white; padding: 1rem; text-align: center; border-radius: 8px 8px 0 0; border-bottom: 1px solid #ddd;">
+            </div>
+
+            <div class="form-content" style="border-top: none; border-radius: 0 0 8px 8px;">
+                <form method="POST" action="{{ url_for('auth_bp.procesar_login') }}"> 
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" name="email" placeholder="admin@nodeblog.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" name="password" placeholder="••••••••" required>
+                    </div>
+                    
+                    <button type="submit" class="btn">Iniciar Sesion</button>
+                </form>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flashes" style="color: #e74c3c; list-style-type: none; padding: 1rem 0 0 0; text-align: center;">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
